@@ -11,7 +11,7 @@ DHT dht(DHTPIN, DHTTYPE);
 const char* ssid = "Wokwi-GUEST";     // WiFi for Wokwi simulator
 const char* password = "";            // No password for Wokwi virtual Wi-Fi
 const char* server = "http://api.thingspeak.com/update";
-String apiKey = "S0DIL4CFDDW6Y8YJ";   // Your ThingSpeak Write API Key
+String apiKey = "###";   // Your ThingSpeak Write API Key
 
 void setup() {
   Serial.begin(115200);
