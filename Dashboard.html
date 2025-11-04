@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Temperature Alert System</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f5f8fa;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #0078d7;
+    }
+    .data-box {
+      display: inline-block;
+      margin: 15px;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 200px;
+    }
+    .data-value {
+      font-size: 2.2em;
+      font-weight: bold;
+      color: #ff6b00;
+    }
+    #chartContainer {
+      width: 90%;
+      height: 400px;
+      margin: 40px auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌡️ Smart Temperature Alert Dashboard</h1>
+
+  <div class="data-box">
+    <h3>Temperature (°C)</h3>
+    <div id="temp" class="data-value">--</div>
+  </div>
+
+  <div class="data-box">
+    <h3>Humidity (%)</h3>
+    <div id="humidity" class="data-value">--</div>
+  </div>
+
+<div class="chartContainer">
+  <iframe width="450" height="260" style="border: 1px solid #cccccc;"
+  src="https://thingspeak.com/channels/3146842/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Temperature&type=line"></iframe>
+
+  <iframe width="450" height="260" style="border: 1px solid #cccccc;"
+  src="https://thingspeak.com/channels/3146842/charts/2?bgcolor=%23ffffff&color=%2300aaff&dynamic=true&results=60&title=Humidity&type=line"></iframe>
+</div>
+
+
+  <script>
+    const channelID = "3146842";
+    const readAPIKey = "073F0HV0PW8OT4OM";
+
+    async function fetchData() {
+      const url = `https://api.thingspeak.com/channels/${channelID}/feeds.json?api_key=${readAPIKey}&results=1`;
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.feeds && data.feeds.length > 0) {
+        const latest = data.feeds[0];
+        document.getElementById("temp").textContent = latest.field1 + " °C";
+        document.getElementById("humidity").textContent = latest.field2 + " %";
+      }
+    }
+
+    fetchData();
+    setInterval(fetchData, 15000);
+  </script>
+</body>
+</html>
